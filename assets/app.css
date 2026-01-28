@@ -14,6 +14,7 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%}
+html{overflow-x:hidden}
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -21,6 +22,7 @@ body{
              radial-gradient(900px 500px at 90% 0%, rgba(34,197,94,.15), transparent 55%),
              var(--bg);
   color:var(--text);
+  overflow-x:hidden;
 }
 
 a{color:inherit}
@@ -132,6 +134,7 @@ button,input,select,textarea{font:inherit}
 .form{display:grid;gap:10px}
 .form .row{gap:10px}
 .field{display:grid;gap:6px;min-width:220px;flex:1}
+@media (max-width: 420px){.field{min-width:100%}}
 label{font-size:12px;color:var(--muted)}
 input,select,textarea{
   background:rgba(15,23,42,.65);
@@ -152,6 +155,45 @@ textarea{min-height:90px;resize:vertical}
 .table th,.table td{padding:10px 10px;border-bottom:1px solid rgba(148,163,184,.14);text-align:left;font-size:13px}
 .table th{color:var(--muted);font-weight:650}
 .table tr:hover td{background:rgba(56,189,248,.05)}
+
+/* Mobile: render tables as cards (no horizontal scroll) */
+@media (max-width: 760px){
+  .table thead{display:none}
+  .table,
+  .table tbody,
+  .table tr,
+  .table td{display:block;width:100%}
+
+  .table{border-radius:0;overflow:visible}
+  .table tr{
+    margin-bottom:12px;
+    border:1px solid rgba(148,163,184,.14);
+    border-radius:12px;
+    background:rgba(15,23,42,.45);
+    overflow:hidden;
+  }
+  .table td{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding:10px 12px;
+    border-bottom:1px solid rgba(148,163,184,.12);
+    word-break:break-word;
+  }
+  .table td:last-child{border-bottom:none}
+  .table td::before{
+    content:attr(data-label);
+    color:var(--muted);
+    font-size:12px;
+    flex:0 0 42%;
+    max-width:42%;
+  }
+
+  .table td[data-label=""]::before{content:""}
+  .table td.actions{justify-content:flex-end}
+  .table td.actions::before{content:""}
+}
 
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);font-size:12px;color:var(--muted)}
 .badge.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.12);color:#bbf7d0}

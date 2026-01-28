@@ -753,14 +753,14 @@ function renderProducts(state) {
     const tr = document.createElement('tr');
     const badge = p.stock <= p.stockMin ? '<span class="badge low">Bajo</span>' : '<span class="badge ok">OK</span>';
     tr.innerHTML = `
-      <td>${escapeHtml(p.name)}</td>
-      <td>${escapeHtml(p.category)}</td>
-      <td>${formatMoney(p.cost)}</td>
-      <td>${formatMoney(p.price)}</td>
-      <td>${p.stock}</td>
-      <td>${p.stockMin}</td>
-      <td>${badge}</td>
-      <td>
+      <td data-label="Nombre">${escapeHtml(p.name)}</td>
+      <td data-label="Categoría">${escapeHtml(p.category)}</td>
+      <td data-label="Costo">${formatMoney(p.cost)}</td>
+      <td data-label="Precio">${formatMoney(p.price)}</td>
+      <td data-label="Stock">${p.stock}</td>
+      <td data-label="Mín.">${p.stockMin}</td>
+      <td data-label="Estado">${badge}</td>
+      <td class="actions" data-label="">
         <button class="btn" data-act="edit" data-id="${p.id}">Editar</button>
         <button class="btn danger" data-act="del" data-id="${p.id}">Eliminar</button>
       </td>
@@ -791,12 +791,12 @@ function renderSales(state) {
     const name = p ? p.name : '(producto eliminado)';
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${formatDateTime(s.at)}</td>
-      <td>${escapeHtml(name)}</td>
-      <td>${s.qty}</td>
-      <td>${formatMoney(s.total)}</td>
-      <td class="text-success">${formatMoney(s.profit)}</td>
-      <td><button class="btn danger" data-act="sale-del" data-id="${s.id}">Eliminar</button></td>
+      <td data-label="Fecha">${formatDateTime(s.at)}</td>
+      <td data-label="Producto">${escapeHtml(name)}</td>
+      <td data-label="Cant.">${s.qty}</td>
+      <td data-label="Total">${formatMoney(s.total)}</td>
+      <td data-label="Ganancia" class="text-success">${formatMoney(s.profit)}</td>
+      <td class="actions" data-label=""><button class="btn danger" data-act="sale-del" data-id="${s.id}">Eliminar</button></td>
     `;
     tbody.appendChild(tr);
   }
@@ -810,11 +810,11 @@ function renderExpenses(state) {
   for (const e of expenses.slice(0, 120)) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${formatDateTime(e.at)}</td>
-      <td>${escapeHtml(e.type)}</td>
-      <td>${formatMoney(e.amount)}</td>
-      <td>${escapeHtml(e.description || '')}</td>
-      <td><button class="btn danger" data-act="exp-del" data-id="${e.id}">Eliminar</button></td>
+      <td data-label="Fecha">${formatDateTime(e.at)}</td>
+      <td data-label="Tipo">${escapeHtml(e.type)}</td>
+      <td data-label="Monto">${formatMoney(e.amount)}</td>
+      <td data-label="Descripción">${escapeHtml(e.description || '')}</td>
+      <td class="actions" data-label=""><button class="btn danger" data-act="exp-del" data-id="${e.id}">Eliminar</button></td>
     `;
     tbody.appendChild(tr);
   }
@@ -833,12 +833,12 @@ function renderTables(state) {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>Mesa ${t.table}</td>
-      <td>${t.players}</td>
-      <td>${formatMoney(t.rate)}/h/jugador</td>
-      <td>${mins} min</td>
-      <td>${formatMoney(total)}</td>
-      <td>
+      <td data-label="Mesa">Mesa ${t.table}</td>
+      <td data-label="Jugadores">${t.players}</td>
+      <td data-label="Tarifa">${formatMoney(t.rate)}/h/jugador</td>
+      <td data-label="Tiempo">${mins} min</td>
+      <td data-label="Total">${formatMoney(total)}</td>
+      <td class="actions" data-label="">
         <button class="btn warn" data-act="table-stop" data-id="${t.id}">Finalizar</button>
         <button class="btn" data-act="table-plus" data-id="${t.id}">+ Jugador</button>
       </td>
