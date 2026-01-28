@@ -151,8 +151,9 @@ textarea{min-height:90px;resize:vertical}
   border-collapse:collapse;
   overflow:hidden;
   border-radius:12px;
+  table-layout:fixed;
 }
-.table th,.table td{padding:10px 10px;border-bottom:1px solid rgba(148,163,184,.14);text-align:left;font-size:13px}
+.table th,.table td{padding:10px 10px;border-bottom:1px solid rgba(148,163,184,.14);text-align:left;font-size:13px;word-break:break-word;overflow-wrap:anywhere}
 .table th{color:var(--muted);font-weight:650}
 .table tr:hover td{background:rgba(56,189,248,.05)}
 
@@ -193,6 +194,44 @@ textarea{min-height:90px;resize:vertical}
   .table td[data-label=""]::before{content:""}
   .table td.actions{justify-content:flex-end}
   .table td.actions::before{content:""}
+}
+
+/* Inventory has many columns: switch earlier to prevent horizontal scroll */
+@media (max-width: 1280px){
+  .inventory-table thead{display:none}
+  .inventory-table,
+  .inventory-table tbody,
+  .inventory-table tr,
+  .inventory-table td{display:block;width:100%}
+
+  .inventory-table{border-radius:0;overflow:visible}
+  .inventory-table tr{
+    margin-bottom:12px;
+    border:1px solid rgba(148,163,184,.14);
+    border-radius:12px;
+    background:rgba(15,23,42,.45);
+    overflow:hidden;
+  }
+  .inventory-table td{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding:10px 12px;
+    border-bottom:1px solid rgba(148,163,184,.12);
+    word-break:break-word;
+  }
+  .inventory-table td:last-child{border-bottom:none}
+  .inventory-table td::before{
+    content:attr(data-label);
+    color:var(--muted);
+    font-size:12px;
+    flex:0 0 42%;
+    max-width:42%;
+  }
+  .inventory-table td[data-label=""]::before{content:""}
+  .inventory-table td.actions{justify-content:flex-end}
+  .inventory-table td.actions::before{content:""}
 }
 
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);font-size:12px;color:var(--muted)}
