@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="M&S Control Finanzas - App Offline (datos locales en el navegador)" />
+        <meta name="theme-color" content="#0b1220" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <title>M&S Control Finanzas (Offline)</title>
+
+        <link rel="manifest" href="manifest.webmanifest" />
+        <link rel="icon" href="favicon.ico" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+        <link rel="stylesheet" href="assets/app.css" />
+        <script defer src="assets/app.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header class="header">
+                <div class="brand">
+                    <div class="logo" aria-hidden="true"></div>
+                    <div>
+                        <h1 id="appTitle">M&S - Control Finanzas</h1>
+                        <p id="appDate">—</p>
+                    </div>
+                </div>
+
+                <nav class="nav" aria-label="Secciones" role="tablist">
+                    <button class="tab" id="tab-dashboard" role="tab" type="button" data-target="dashboard" aria-controls="dashboard" aria-selected="true" tabindex="0">Dashboard</button>
+                    <button class="tab" id="tab-tables" role="tab" type="button" data-target="tables" aria-controls="tables" aria-selected="false" tabindex="-1">Mesas</button>
+                    <button class="tab" id="tab-sales" role="tab" type="button" data-target="sales" aria-controls="sales" aria-selected="false" tabindex="-1">Ventas</button>
+                    <button class="tab" id="tab-expenses" role="tab" type="button" data-target="expenses" aria-controls="expenses" aria-selected="false" tabindex="-1">Gastos</button>
+                    <button class="tab" id="tab-inventory" role="tab" type="button" data-target="inventory" aria-controls="inventory" aria-selected="false" tabindex="-1">Inventario</button>
+                    <button class="tab" id="tab-reports" role="tab" type="button" data-target="reports" aria-controls="reports" aria-selected="false" tabindex="-1">Reportes</button>
+                    <button class="tab" id="tab-settings" role="tab" type="button" data-target="settings" aria-controls="settings" aria-selected="false" tabindex="-1">Config</button>
+                </nav>
+
+                <div class="actions">
+                    <button class="btn" id="btnInstall" type="button" hidden>Instalar</button>
+                    <button class="btn" id="btnExport" type="button">Exportar JSON</button>
+                    <input id="fileImport" type="file" accept="application/json" hidden />
+                    <button class="btn" id="btnImport" type="button">Importar JSON</button>
+                    <button class="btn danger" id="btnClear" type="button">Borrar todo</button>
+                </div>
+            </header>
+
+            <main class="grid" style="margin-top: 14px">
+                <section class="section active" id="dashboard">
+                    <div class="grid cols-4">
+                        <div class="card">
+                            <h2>Ingresos (hoy)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiIncomeToday">—</div>
+                                    <div class="sub">Ventas + Mesas finalizadas</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Ingresos (semana)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiIncomeWeek">—</div>
+                                    <div class="sub">Lunes → Domingo</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Ingresos (mes)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiIncomeMonth">—</div>
+                                    <div class="sub">Mes actual</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Mesas activas</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiActiveTables">—</div>
+                                    <div class="sub">En curso</div>
+                                </div>
+                                <span class="badge">Live</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid cols-4" style="margin-top: 14px">
+                        <div class="card">
+                            <h2>Ganancia (hoy)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiProfitToday">—</div>
+                                    <div class="sub">Ganancia ventas - gastos</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h2>Ganancia (semana)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiProfitWeek">—</div>
+                                    <div class="sub">Ganancia ventas - gastos</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h2>Ganancia (mes)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiProfitMonth">—</div>
+                                    <div class="sub">Ganancia ventas - gastos</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h2>Gastos (hoy)</h2>
+                            <div class="kpi">
+                                <div>
+                                    <div class="value" id="kpiExpensesToday">—</div>
+                                    <div class="sub">Solo gastos del día</div>
+                                </div>
+                                <span class="badge">Auto</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid cols-2" style="margin-top: 14px">
+                        <div class="card">
+                            <h2>Alertas de inventario</h2>
+                            <ul id="lowStockList" style="margin: 0; padding-left: 18px"></ul>
+                            <hr class="sep" />
+                            <div class="notice">Tip: usa “Exportar JSON” como backup. Todo queda guardado localmente en tu navegador.</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Cómo se guarda</h2>
+                            <div class="notice" id="aboutStorage">—</div>
+                            <hr class="sep" />
+                            <div class="notice">
+                                Esta app es 100% offline: no usa servidor ni base de datos externa. Si limpias el navegador o cambias de dispositivo, importa un backup.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="tables">
+                    <div class="grid cols-2">
+                        <div class="card">
+                            <div class="card-head">
+                                <img class="app-icon" src="logo.png" alt="" aria-hidden="true" />
+                                <h2>Iniciar mesa</h2>
+                            </div>
+                            <form class="form" id="tableForm">
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="tableNumber">Mesa</label>
+                                        <input id="tableNumber" type="number" min="1" value="1" required />
+                                    </div>
+                                    <div class="field">
+                                        <label for="tablePlayers">Jugadores</label>
+                                        <input id="tablePlayers" type="number" min="1" value="2" required />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="tableRate">Tarifa (por hora por jugador)</label>
+                                        <input id="tableRate" type="number" min="0" step="0.01" value="10" required />
+                                    </div>
+                                </div>
+                                <button class="btn primary" type="submit">Iniciar</button>
+                            </form>
+                            <div class="notice" style="margin-top: 10px">Al finalizar la mesa se registra el total como ingreso.</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Mesas activas</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mesa</th>
+                                        <th>Jugadores</th>
+                                        <th>Tarifa</th>
+                                        <th>Tiempo</th>
+                                        <th>Total</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablesTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="sales">
+                    <div class="grid cols-2">
+                        <div class="card">
+                            <div class="card-head">
+                                <img class="app-icon" src="logo.png" alt="" aria-hidden="true" />
+                                <h2>Registrar venta</h2>
+                            </div>
+                            <form class="form" id="saleForm">
+                                <div class="field">
+                                    <label for="saleProduct">Producto</label>
+                                    <select id="saleProduct" required>
+                                        <option value="">Seleccione un producto</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="saleQty">Cantidad</label>
+                                        <input id="saleQty" type="number" min="1" value="1" required />
+                                    </div>
+                                    <div class="field">
+                                        <label for="saleNotes">Notas (opcional)</label>
+                                        <input id="saleNotes" type="text" placeholder="Ej: promo, cliente, etc." />
+                                    </div>
+                                </div>
+                                <button class="btn primary" type="submit">Registrar</button>
+                            </form>
+                            <div class="notice" style="margin-top: 10px">La venta descuenta stock y calcula ganancia (precio - costo).</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Historial de ventas</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Producto</th>
+                                        <th>Cant.</th>
+                                        <th>Total</th>
+                                        <th>Ganancia</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="salesTbody"></tbody>
+                            </table>
+                            <div class="notice" style="margin-top: 8px">Se muestran las últimas 80 ventas.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="expenses">
+                    <div class="grid cols-2">
+                        <div class="card">
+                            <div class="card-head">
+                                <img class="app-icon" src="logo.png" alt="" aria-hidden="true" />
+                                <h2>Registrar gasto</h2>
+                            </div>
+                            <form class="form" id="expenseForm">
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="expenseType">Tipo</label>
+                                        <select id="expenseType" required>
+                                            <option value="">Seleccionar</option>
+                                            <option value="renta">Renta</option>
+                                            <option value="servicios">Servicios</option>
+                                            <option value="compras">Compras</option>
+                                            <option value="mantenimiento">Mantenimiento</option>
+                                            <option value="otros">Otros</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label for="expenseAmount">Monto</label>
+                                        <input id="expenseAmount" type="number" min="0" step="0.01" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="expenseDescription">Descripción (opcional)</label>
+                                    <textarea id="expenseDescription" placeholder="Ej: compra de insumos, reparación, etc."></textarea>
+                                </div>
+                                <button class="btn primary" type="submit">Registrar</button>
+                            </form>
+                        </div>
+
+                        <div class="card">
+                            <h2>Historial de gastos</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>Monto</th>
+                                        <th>Descripción</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expensesTbody"></tbody>
+                            </table>
+                            <div class="notice" style="margin-top: 8px">Se muestran los últimos 120 gastos.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="inventory">
+                    <div class="grid cols-2">
+                        <div class="card">
+                            <div class="card-head">
+                                <img class="app-icon" src="logo.png" alt="" aria-hidden="true" />
+                                <h2>Producto (agregar / editar)</h2>
+                            </div>
+                            <form class="form" id="productForm">
+                                <input id="productId" type="hidden" />
+                                <div class="field">
+                                    <label for="productName">Nombre</label>
+                                    <input id="productName" type="text" required />
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="productCategory">Categoría</label>
+                                        <select id="productCategory" required>
+                                            <option value="bebida">Bebida</option>
+                                            <option value="snack">Snack</option>
+                                            <option value="dulce">Dulce</option>
+                                            <option value="suministro">Suministro</option>
+                                            <option value="otro">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label for="productStock">Stock</label>
+                                        <input id="productStock" type="number" min="0" value="0" required />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="productCost">Costo</label>
+                                        <input id="productCost" type="number" min="0" step="0.01" value="0" required />
+                                    </div>
+                                    <div class="field">
+                                        <label for="productPrice">Precio</label>
+                                        <input id="productPrice" type="number" min="0" step="0.01" value="0" required />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="productStockMin">Stock mínimo</label>
+                                        <input id="productStockMin" type="number" min="0" value="0" required />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="btn primary" type="submit">Guardar</button>
+                                    <button class="btn" type="button" id="productCancel">Cancelar</button>
+                                </div>
+                            </form>
+                            <div class="notice" style="margin-top: 10px">Si eliminas un producto, el historial de ventas se conserva.</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Inventario</h2>
+                            <div class="row" style="margin-bottom: 10px">
+                                <div class="field" style="min-width: 190px">
+                                    <label for="productsFilter">Filtrar categoría</label>
+                                    <select id="productsFilter">
+                                        <option value="all">Todas</option>
+                                        <option value="bebida">Bebida</option>
+                                        <option value="snack">Snack</option>
+                                        <option value="dulce">Dulce</option>
+                                        <option value="suministro">Suministro</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="field" style="min-width: 260px">
+                                    <label for="productsSearch">Buscar</label>
+                                    <input id="productsSearch" type="text" placeholder="Nombre del producto..." />
+                                </div>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Categoría</th>
+                                        <th>Costo</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Mín.</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="reports">
+                    <div class="grid cols-2">
+                        <div class="card">
+                            <h2>Exportar</h2>
+                            <div class="notice">JSON es ideal para backup/restauración. CSV es útil para Excel.</div>
+                            <hr class="sep" />
+                            <div class="row">
+                                <button class="btn" type="button" id="btnExportCSV">Exportar CSV</button>
+                            </div>
+                            <hr class="sep" />
+                            <div class="notice">Sugerencia: exporta al final del día o semana.</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Base de datos local (opciones)</h2>
+                            <div class="notice">
+                                En navegador, la “BD local” más robusta y liviana es <b>IndexedDB</b> (ya incluida). Esta versión usa <b>IndexedDB</b> para guardar todo localmente.
+                            </div>
+                            <hr class="sep" />
+                            <div class="notice">
+                                Si quieres una BD real en disco (un archivo) sin que pese: backend liviano con <b>PHP + SQLite</b> (PDO) es mejor que Laravel.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="settings">
+                    <div class="grid cols-2">
+                        <div class="card">
+                            <h2>Configuración y mantenimiento</h2>
+                            <div class="notice">
+                                - Exporta JSON para respaldos.
+                                <br />
+                                - Importa JSON para restaurar.
+                                <br />
+                                - “Borrar todo” reinicia la app.
+                            </div>
+                            <hr class="sep" />
+                            <div class="notice">Esta app es 100% offline (sin Bootstrap/Chart.js). Todo es local y liviano.</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Respaldos automáticos (en el dispositivo)</h2>
+                            <div class="notice" id="snapshotInfo">—</div>
+                            <hr class="sep" />
+                            <div class="row">
+                                <button class="btn" type="button" id="btnSnapshotNow">Crear respaldo ahora</button>
+                                <button class="btn warn" type="button" id="btnMigrateLegacy">Importar datos antiguos</button>
+                            </div>
+                            <ul class="snapshot-list" id="snapshotList"></ul>
+                            <div class="small">Se guardan hasta 20 respaldos. Puedes restaurar o descargar cualquiera.</div>
+                        </div>
+
+                        <div class="card">
+                            <h2>Sincronización (opcional, online)</h2>
+                            <div class="notice">
+                                Mantiene tus datos localmente (offline), y si tienes internet puedes sincronizar con otro dispositivo.
+                                <br />
+                                Esta opción usa <b>WebDAV</b> (por ejemplo Nextcloud). No requiere servidor propio, pero sí una cuenta WebDAV.
+                            </div>
+                            <hr class="sep" />
+                            <form class="form" id="syncForm" autocomplete="off">
+                                <div class="field">
+                                    <label for="syncUrl">URL WebDAV (archivo .json)</label>
+                                    <input id="syncUrl" type="url" placeholder="https://TU-SERVIDOR/remote.php/dav/files/USUARIO/ms_finanzas_sync.json" />
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="syncUser">Usuario</label>
+                                        <input id="syncUser" type="text" placeholder="usuario" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="syncPass">Contraseña / app password</label>
+                                        <input id="syncPass" type="password" placeholder="(se guarda solo en este dispositivo)" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="btn" type="button" id="btnSyncTest">Probar</button>
+                                    <button class="btn primary" type="button" id="btnSyncPush">Subir</button>
+                                    <button class="btn warn" type="button" id="btnSyncPull">Bajar</button>
+                                </div>
+                                <label class="check">
+                                    <input id="syncAuto" type="checkbox" />
+                                    Auto-sync al abrir (si hay internet)
+                                </label>
+                            </form>
+                            <div class="small" id="syncStatus">—</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite">
+            <div class="t-title" id="toastTitle">—</div>
+            <div class="t-msg" id="toastMsg">—</div>
+        </div>
+    </body>
+</html>
