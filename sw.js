@@ -1,6 +1,6 @@
 /* Simple PWA service worker (no build tools). */
 
-const CACHE_NAME = 'ms-finanzas-cache-v1';
+const CACHE_NAME = 'ms-finanzas-cache-v2';
 
 const PRECACHE_URLS = [
   './',
@@ -43,6 +43,25 @@ self.addEventListener('fetch', (event) => {
   // Only handle same-origin requests
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
+  // App shell assets: prefer network so updates (CSS/JS) arrive even if only those files change
+  if (url.pathname.endsWith('/assets/app.css') || url.pathname.endsWith('/assets/app.js')) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        try {
+          const fresh = await fetch(req);
+          cache.put(req, fresh.clone());
+          return fresh;
+        } catch {
+          const cached = await caches.match(req);
+          if (cached) return cached;
+          throw new Error('offline');
+        }
+      })()
+    );
+    return;
+  }
 
   // HTML navigation: network-first (so updates arrive), fallback to cache
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
