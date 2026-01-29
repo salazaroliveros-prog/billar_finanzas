@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=1200, viewport-fit=cover" />
         <meta name="description" content="M&S Control Finanzas - App Offline (datos locales en el navegador)" />
         <meta name="theme-color" content="#0b1220" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -45,7 +45,7 @@
                 </div>
             </header>
 
-            <main class="grid" style="margin-top: 14px">
+            <main class="grid mt-14">
                 <section class="section active" id="dashboard">
                     <div class="grid cols-4">
                         <div class="card">
@@ -93,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div class="grid cols-4" style="margin-top: 14px">
+                    <div class="grid cols-4 mt-14">
                         <div class="card">
                             <h2>Ganancia (hoy)</h2>
                             <div class="kpi">
@@ -136,10 +136,10 @@
                         </div>
                     </div>
 
-                    <div class="grid cols-2" style="margin-top: 14px">
+                    <div class="grid cols-2 mt-14">
                         <div class="card">
                             <h2>Alertas de inventario</h2>
-                            <ul id="lowStockList" style="margin: 0; padding-left: 18px"></ul>
+                            <ul id="lowStockList" class="list-reset"></ul>
                             <hr class="sep" />
                             <div class="notice">Tip: usa “Exportar JSON” como backup. Todo queda guardado localmente en tu navegador.</div>
                         </div>
@@ -181,7 +181,7 @@
                                 </div>
                                 <button class="btn primary" type="submit">Iniciar</button>
                             </form>
-                            <div class="notice" style="margin-top: 10px">Al finalizar la mesa se registra el total como ingreso.</div>
+                            <div class="notice mt-10">Al finalizar la mesa se registra el total como ingreso.</div>
                         </div>
 
                         <div class="card">
@@ -229,7 +229,7 @@
                                 </div>
                                 <button class="btn primary" type="submit">Registrar</button>
                             </form>
-                            <div class="notice" style="margin-top: 10px">La venta descuenta stock y calcula ganancia (precio - costo).</div>
+                            <div class="notice mt-10">La venta descuenta stock y calcula ganancia (precio - costo).</div>
                         </div>
 
                         <div class="card">
@@ -247,7 +247,7 @@
                                 </thead>
                                 <tbody id="salesTbody"></tbody>
                             </table>
-                            <div class="notice" style="margin-top: 8px">Se muestran las últimas 80 ventas.</div>
+                            <div class="notice mt-8">Se muestran las últimas 80 ventas.</div>
                         </div>
                     </div>
                 </section>
@@ -299,7 +299,7 @@
                                 </thead>
                                 <tbody id="expensesTbody"></tbody>
                             </table>
-                            <div class="notice" style="margin-top: 8px">Se muestran los últimos 120 gastos.</div>
+                            <div class="notice mt-8">Se muestran los últimos 120 gastos.</div>
                         </div>
                     </div>
                 </section>
@@ -354,13 +354,13 @@
                                     <button class="btn" type="button" id="productCancel">Cancelar</button>
                                 </div>
                             </form>
-                            <div class="notice" style="margin-top: 10px">Si eliminas un producto, el historial de ventas se conserva.</div>
+                            <div class="notice mt-10">Si eliminas un producto, el historial de ventas se conserva.</div>
                         </div>
 
                         <div class="card">
                             <h2>Inventario</h2>
-                            <div class="row" style="margin-bottom: 10px">
-                                <div class="field" style="min-width: 190px">
+                            <div class="row mb-10">
+                                <div class="field minw-190">
                                     <label for="productsFilter">Filtrar categoría</label>
                                     <select id="productsFilter">
                                         <option value="all">Todas</option>
@@ -371,7 +371,7 @@
                                         <option value="otro">Otro</option>
                                     </select>
                                 </div>
-                                <div class="field" style="min-width: 260px">
+                                <div class="field minw-260">
                                     <label for="productsSearch">Buscar</label>
                                     <input id="productsSearch" type="text" placeholder="Nombre del producto..." />
                                 </div>

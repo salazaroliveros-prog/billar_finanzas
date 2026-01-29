@@ -1,6 +1,6 @@
 /* Simple PWA service worker (no build tools). */
 
-const CACHE_NAME = 'ms-finanzas-cache-v2';
+const CACHE_NAME = 'ms-finanzas-cache-v3';
 
 const PRECACHE_URLS = [
   './',
